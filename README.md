@@ -15,11 +15,12 @@ Ce projet utilise un modèle de réseau de neurones convolutionnel (CNN) pour re
 ├── docker-compose.yml
 ├── main.py
 ├── model
-│   └── votre_modele.pt
+│   └── mnist-0.0.1.pt
 ├── src
 │   ├── app
 │   │   ├── back.py
 │   │   └── front.py
 │   └── model
-│       └── classes_de_vos_modeles.py
+│       ├── mlp.py
+│       └── convnet.py
 └── README.md
