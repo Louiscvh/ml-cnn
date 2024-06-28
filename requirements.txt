@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+torch
+pillow
+streamlit
+streamlit-drawable-canvas
+requests
+torchvision

@@ -7,26 +7,28 @@ class Flatten(nn.Module):
         return input.view(input.size(0), -1)
 
 class ConvNet(nn.Module):
-    def __init__(self, input_size, n_kernels, output_size):
-        super().__init__()
-        self.net = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=n_kernels, kernel_size=5),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2),
-            nn.Conv2d(in_channels=n_kernels, out_channels=n_kernels, kernel_size=5),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2),
-            nn.Flatten(),
-            nn.Linear(in_features=n_kernels*4*4, out_features=50),
-            nn.Linear(in_features=50, out_features=output_size)
-        )
-
+    def __init__(self):
+        super(ConvNet, self).__init__()
+        self.conv1 = nn.Conv2d(in_channels=1,
+                               out_channels=4,
+                               kernel_size=3,
+                               padding=1)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.conv2 = nn.Conv2d(in_channels=4,
+                               out_channels=8,
+                               kernel_size=3,
+                               padding=1)
+        self.fc = nn.Linear(8 * 7 * 7, 10)
     def forward(self, x):
-        return self.net(x)
+        x = self.pool(torch.relu(self.conv1(x)))
+        x = self.pool(torch.relu(self.conv2(x)))
+        x = x.view(-1, 8 * 7 * 7)
+        return self.fc(x)
 
     def train_net(self, train_loader, perm=torch.arange(0, 784).long(), n_epoch=1):
         self.train()
-        optimizer = torch.optim.AdamW(self.parameters())
+        optimizer = torch.optim.AdamW(self.parameters(), lr=0.005)
+
 
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         print(f"Using {device} device")

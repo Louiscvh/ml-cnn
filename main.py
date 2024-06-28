@@ -12,7 +12,7 @@ app = FastAPI()
 
 # Function to load saved ConvNet model
 def load_convnet_model(model_path):
-    model = ConvNet(input_size=1, n_kernels=6, output_size=10)
+    model = ConvNet()
     model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
     model.eval()
     return model
@@ -60,7 +60,9 @@ def main():
     n_hidden = 8
 
     # Initialize ConvNet and MLP models
-    convnet = ConvNet(input_size, n_kernels, output_size)
+#    convnet = ConvNet(input_size, n_kernels, output_size)
+    convnet = ConvNet()
+
     mlp = MLP(input_size=28*28, n_hidden=n_hidden, output_size=output_size)
 
     # Print model parameters
